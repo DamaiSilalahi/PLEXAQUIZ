@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'screens/input_name_screen.dart';
+import 'screens/quiz_home_screen.dart';
 import 'themes/app_theme.dart';
 
 void main() {
@@ -11,17 +13,13 @@ class PlexaQuizApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'PlexaQuiz',
-      theme: AppTheme.lightTheme, // ✅ Terapkan theme di sini
-      home: const Scaffold(
-        body: Center(
-          child: Text(
-            'Hello PlexaQuiz!',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
+      theme: AppTheme.lightTheme,
+      debugShowCheckedModeBanner: false,
+      home: const InputNameScreen(),
+      routes: {
+        '/quizHome': (context) => const QuizHomeScreen(),
+      },
     );
   }
 }
