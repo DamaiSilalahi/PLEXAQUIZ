@@ -22,7 +22,7 @@ PlexaQuiz adalah platform kuis interaktif yang dirancang untuk menguji pengetahu
 
 * **Penyelenggaraan Kuis:** Menyajikan serangkaian soal pilihan ganda secara terstruktur.
 * **Pengaturan Waktu:** Menerapkan **timer hitung mundur** yang berjalan secara aktif selama sesi kuis berlangsung.
-* **Navigasi Soal:** Memungkinkan pengguna untuk **berpindah** ke soal berikutnya atau sebelumnya, serta melompat ke soal tertentu melalui panel navigasi horizontal.
+* **Navigasi Soal:** Memungkinkan pengguna untuk **berpindah** ke soal berikutnya atau sebelumnya, serta melompat ke soal tertentu.
 * **Perhitungan Skor:** Menghitung skor akhir secara otomatis ketika kuis selesai (baik di-*submit* atau waktu habis).
 
 ---
@@ -39,7 +39,7 @@ Inspirasi dan aset desain *User Interface* (UI) diambil dari sumber komunitas Fi
 
 ## E. Screenshot/Video Aplikasi
 
-**Demo Video Aplikasi (Aksi Langsung)**
+**Demo Video Aplikasi**
 
 [Tonton Demo Video Aplikasi](https://drive.google.com/file/d/1CEZ75-vIR_7kUgukB1UcTbWOPHWJmQK9/view?usp=sharing)
 
