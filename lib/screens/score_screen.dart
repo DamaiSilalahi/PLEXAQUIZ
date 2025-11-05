@@ -1,8 +1,6 @@
-// score_screen.dart - KODE LENGKAP DENGAN PERBAIKAN GRADASI TOMBOL
-
 import 'package:flutter/material.dart';
 import '../themes/app_theme.dart';
-import 'quiz_home_screen.dart'; // Pastikan path ini benar
+import 'quiz_home_screen.dart'; 
 
 class ScoreScreen extends StatelessWidget {
   final int score;
@@ -58,7 +56,7 @@ class ScoreScreen extends StatelessWidget {
                 topRight: Radius.circular(24),
               ),
             ),
-            // PERBAIKAN: Memastikan konten dapat discroll
+ 
             child: SingleChildScrollView( 
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -143,7 +141,6 @@ class ScoreScreen extends StatelessWidget {
 
                   const SizedBox(height: 100),
 
-                  // 🔥 BAGIAN PERBAIKAN: Tombol Back to Home dengan Gradasi
                   SizedBox(
                     width: double.infinity,
                     height: 52,
@@ -151,7 +148,7 @@ class ScoreScreen extends StatelessWidget {
                       decoration: BoxDecoration( // Tambahkan Container untuk menampung Gradient
                         borderRadius: BorderRadius.circular(12),
                         gradient: const LinearGradient(
-                          // Menggunakan warna gradient yang sama dengan AppBar/QuizScreen
+                          
                           colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -170,7 +167,6 @@ class ScoreScreen extends StatelessWidget {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          // Hapus warna latar belakang karena sudah dihandle Container/Gradient
                           backgroundColor: Colors.transparent, 
                           shadowColor: Colors.transparent, // Hilangkan shadow
                           shape: RoundedRectangleBorder(
@@ -189,8 +185,7 @@ class ScoreScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // 🔥 AKHIR BAGIAN PERBAIKAN
-
+                  
                   const SizedBox(height: 20),
                 ],
               ),

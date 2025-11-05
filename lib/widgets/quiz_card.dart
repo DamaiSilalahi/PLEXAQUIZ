@@ -44,6 +44,7 @@ class QuizCard extends StatelessWidget {
           ],
         ),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
@@ -51,7 +52,7 @@ class QuizCard extends StatelessWidget {
                 imagePath,
                 width: isTablet ? 90 : 65,
                 height: isTablet ? 90 : 65,
-                fit: BoxFit.cover,
+                fit: BoxFit.contain, // FIX: Mengatasi pemotongan gambar
                 errorBuilder: (_, __, ___) => Container(
                   width: isTablet ? 90 : 65,
                   height: isTablet ? 90 : 65,
@@ -64,6 +65,7 @@ class QuizCard extends StatelessWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     title,
@@ -72,6 +74,8 @@ class QuizCard extends StatelessWidget {
                       fontSize: isTablet ? 20 : 16,
                       fontWeight: FontWeight.w600,
                     ),
+                    overflow: TextOverflow.ellipsis, // FIX: Mengatasi pemotongan teks
+                    maxLines: 1, 
                   ),
                   const SizedBox(height: 6),
                   Row(

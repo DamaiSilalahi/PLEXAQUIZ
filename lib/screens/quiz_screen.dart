@@ -1,5 +1,3 @@
-// quiz_screen.dart - KODE VERSI AMAN (ANTI LateInitializationError)
-
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../data/quiz_data.dart';
@@ -31,10 +29,9 @@ class _QuizScreenState extends State<QuizScreen>
   int currentIndex = 0;
   late List<int?> userAnswers;
   late Timer timer;
-  int remainingSeconds = 5;
-  
-  // 🔥 PERBAIKAN: INISIALISASI LANGSUNG UNTUK MENGHINDARI LATEINITIALIZATIONERROR
-  final ScrollController _scrollController = ScrollController(); 
+  int remainingSeconds = 900;
+
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -50,7 +47,6 @@ class _QuizScreenState extends State<QuizScreen>
       }
     });
 
-    // Panggil scroll setelah build pertama selesai
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToCurrentIndex();
     });
@@ -63,26 +59,20 @@ class _QuizScreenState extends State<QuizScreen>
     super.dispose();
   }
 
-  // Fungsi untuk MENGGESER indikator soal
   void _scrollToCurrentIndex() {
-    // Ukuran satu item indikator soal: diameter (28) + margin horizontal (4 * 2) = 36
-    const double itemWidth = 36.0; 
-    
-    // Karena _scrollController sudah diinisialisasi di deklarasi, kita hanya perlu cek hasClients
-    if (_scrollController.hasClients) {
-      // Hitung posisi scroll yang menempatkan item aktif mendekati tengah layar
-      double targetScroll = currentIndex * itemWidth - 
-                            MediaQuery.of(context).size.width / 2 + 
-                            itemWidth / 2;
+    const double itemWidth = 36.0;
 
-      // Pastikan target tidak kurang dari 0
+    if (_scrollController.hasClients) {
+      double targetScroll = currentIndex * itemWidth -
+          MediaQuery.of(context).size.width / 2 +
+          itemWidth / 2;
+
       if (targetScroll < 0) {
-          targetScroll = 0;
+        targetScroll = 0;
       }
-      // Batasi agar tidak scroll melebihi batas
-      if (_scrollController.position.maxScrollExtent > 0 && 
+      if (_scrollController.position.maxScrollExtent > 0 &&
           targetScroll > _scrollController.position.maxScrollExtent) {
-          targetScroll = _scrollController.position.maxScrollExtent;
+        targetScroll = _scrollController.position.maxScrollExtent;
       }
 
       _scrollController.animateTo(
@@ -92,7 +82,6 @@ class _QuizScreenState extends State<QuizScreen>
       );
     }
   }
-
 
   int calculateScore() {
     int total = 0;
@@ -140,7 +129,7 @@ class _QuizScreenState extends State<QuizScreen>
       if (currentIndex < widget.questions.length - 1) {
         setState(() {
           currentIndex++;
-          _scrollToCurrentIndex(); 
+          _scrollToCurrentIndex();
         });
       } else {
         goToScoreScreen();
@@ -158,7 +147,7 @@ class _QuizScreenState extends State<QuizScreen>
     if (currentIndex > 0) {
       setState(() {
         currentIndex--;
-        _scrollToCurrentIndex(); 
+        _scrollToCurrentIndex();
       });
     }
   }
@@ -181,8 +170,10 @@ class _QuizScreenState extends State<QuizScreen>
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        flexibleSpace: Container(
+       
+        flexibleSpace: Container( 
           decoration: const BoxDecoration(
+         
             gradient: LinearGradient(
               colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
               begin: Alignment.topLeft,
@@ -207,7 +198,10 @@ class _QuizScreenState extends State<QuizScreen>
         ],
       ),
       body: Container(
+        width: double.infinity,
+        height: double.infinity, 
         decoration: const BoxDecoration(
+          // 🔥 PERBAIKAN GRADASI 2: Background Body
           gradient: LinearGradient(
             colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
             begin: Alignment.topLeft,
@@ -232,7 +226,6 @@ class _QuizScreenState extends State<QuizScreen>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // KODE PERBAIKAN: Menggunakan ListView.builder dengan ScrollController
                         SizedBox(
                           height: 35,
                           child: ListView.builder(
@@ -326,8 +319,7 @@ class _QuizScreenState extends State<QuizScreen>
                                               end: Alignment.bottomRight,
                                             )
                                           : null,
-                                      color:
-                                          isSelected ? null : Colors.grey.shade400,
+                                      color: isSelected ? null : Colors.grey.shade400,
                                     ),
                                     child: Center(
                                       child: Text(

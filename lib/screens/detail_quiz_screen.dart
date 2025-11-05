@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../themes/app_theme.dart';
 import '../data/quiz_data.dart';
+import '../widgets/quiz_info_row.dart';
 import 'quiz_screen.dart';
 
 class DetailQuizScreen extends StatelessWidget {
@@ -13,19 +14,16 @@ class DetailQuizScreen extends StatelessWidget {
     required this.userName,
   });
 
-  // Widget helper untuk membuat setiap baris aturan dengan bullet point
   Widget _buildRuleRow(String text) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0), // Jarak antar baris
+      padding: const EdgeInsets.only(bottom: 8.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Bullet point (Lingkaran kecil)
           const Padding(
-            padding: EdgeInsets.only(top: 4.0, right: 8.0), // Jarak ke teks
+            padding: EdgeInsets.only(top: 4.0, right: 8.0),
             child: Icon(Icons.circle, size: 6, color: Colors.black87),
           ),
-          // Teks aturan
           Expanded(
             child: Text(
               text,
@@ -47,7 +45,6 @@ class DetailQuizScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // Background gradient header
           Container(
             height: 250,
             decoration: const BoxDecoration(
@@ -59,12 +56,10 @@ class DetailQuizScreen extends StatelessWidget {
             ),
           ),
 
-          // Isi konten
           SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // AppBar manual
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Row(
@@ -88,7 +83,6 @@ class DetailQuizScreen extends StatelessWidget {
 
                 const SizedBox(height: 20),
 
-                // Kontainer putih utama
                 Expanded(
                   child: Container(
                     width: double.infinity,
@@ -130,32 +124,24 @@ class DetailQuizScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 14),
 
-                          // Info rows (Jumlah soal, Waktu, Bintang)
-                          Row(
+                          Column(
                             children: const [
-                              Icon(Icons.help_outline, size: 20, color: Colors.blueGrey),
-                              SizedBox(width: 8),
-                              Text("10 Questions"),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            children: const [
-                              Icon(Icons.access_time, size: 20, color: Colors.blueGrey),
-                              SizedBox(width: 8),
-                              Text("15 minutes total duration"),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
-                            children: const [
-                              Icon(Icons.star, size: 20, color: Colors.blueGrey),
-                              SizedBox(width: 8),
-                              Text("Win 10 stars if all correct"),
+                              QuizInfoRow(
+                                icon: Icons.help_outline, 
+                                text: "10 Questions",
+                              ),
+                              QuizInfoRow(
+                                icon: Icons.access_time, 
+                                text: "15 minutes total duration",
+                              ),
+                              QuizInfoRow(
+                                icon: Icons.star, 
+                                text: "Win 10 stars if all correct",
+                              ),
                             ],
                           ),
 
-                          const SizedBox(height: 22),
+                          const SizedBox(height: 12),
                           const Text(
                             "Please read the text below carefully so you can understand it:",
                             style: TextStyle(
@@ -166,7 +152,6 @@ class DetailQuizScreen extends StatelessWidget {
                           
                           const SizedBox(height: 10),
 
-                          // Area Bullet Points yang Dirapikan
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -178,7 +163,6 @@ class DetailQuizScreen extends StatelessWidget {
 
                           const SizedBox(height: 40),
 
-                          // Tombol Start Quiz
                           SizedBox(
                             width: double.infinity,
                             height: 55,
@@ -209,7 +193,7 @@ class DetailQuizScreen extends StatelessWidget {
                                       builder: (_) => QuizScreen(
                                         questions: questions,
                                         quizType: quizType,
-                                        userName: userName, // kirim nama user
+                                        userName: userName,
                                       ),
                                     ),
                                   );

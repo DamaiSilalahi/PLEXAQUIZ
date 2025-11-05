@@ -15,7 +15,6 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Ambil arguments dari route dengan aman
     final args = ModalRoute.of(context)?.settings.arguments;
     final name = args is String && args.isNotEmpty ? args : 'User';
 
@@ -25,7 +24,6 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // Background gradient header
           Container(
             height: size.height * 0.35,
             decoration: const BoxDecoration(
@@ -37,7 +35,6 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
             ),
           ),
 
-          // Header (Teks Hello & Tombol Back) - Tetap di SafeArea
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -82,10 +79,8 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
             ),
           ),
           
-          // Kontainer Putih Utama (Dibuat Melengkung)
-          // 🔥 PERBAIKAN: Menyesuaikan 'top' agar tidak menimpa teks
           Positioned.fill(
-            top: size.height * 0.35 - (isTablet ? 30 : 30), // Mengurangi nilai `top` agar kontainer putih lebih rendah
+            top: size.height * 0.35 - (isTablet ? 30 : 30),
             child: Container(
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -94,16 +89,15 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
                   topRight: Radius.circular(28),
                 ),
               ),
-              child: Padding( // Menggunakan Padding di sini agar konten tidak menyentuh lengkungan
+              child: Padding(
                 padding: EdgeInsets.only(
                   left: isTablet ? 20 : 12,
                   right: isTablet ? 20 : 12,
-                  top: isTablet ? 30 : 24, // Padding atas untuk jarak dari lengkungan
+                  top: isTablet ? 30 : 24,
                   bottom: isTablet ? 30 : 24,
                 ),
                 child: Column(
                   children: [
-                    // Widget QuizCard di sini
                     QuizCard(
                       title: "UI UX Design",
                       questions: "10 Question",
@@ -121,9 +115,8 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
                       isSelected: selectedQuiz == "Web Development",
                       onTap: () => setState(() => selectedQuiz = "Web Development"),
                     ),
-                    const Spacer(), // 🔥 PERBAIKAN: Mengembalikan Spacer agar tombol selalu di bawah
+                    const Spacer(),
                     
-                    // Tombol Start Quiz
                     GestureDetector(
                       onTap: selectedQuiz == null
                           ? null

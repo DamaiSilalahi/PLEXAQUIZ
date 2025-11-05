@@ -1,5 +1,3 @@
-// time_up_screen.dart - KODE LENGKAP YANG SUDAH DIPERBAIKI
-
 import 'package:flutter/material.dart';
 import '../themes/app_theme.dart';
 import 'quiz_home_screen.dart';
@@ -18,11 +16,8 @@ class TimeUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    // 🔥 PERBAIKAN: Mengatur ulang circleSize agar konsisten dengan ScoreScreen (0.40)
     final circleSize = size.width * 0.40; 
 
-    // Mengambil userName dari argument Route (seperti yang Anda lakukan di onPressed)
-    // Jika tidak ada, default ke 'User'
     final userName = ModalRoute.of(context)?.settings.arguments as String? ?? 'User';
 
     return Scaffold(
@@ -66,12 +61,11 @@ class TimeUpScreen extends StatelessWidget {
                 children: [
                   const SizedBox(height: 30),
 
-                  // indikator lingkaran skor (gradient ring + inner circle)
                   Center(
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        // ring gradient luar
+                        
                         Container(
                           width: circleSize + 30,
                           height: circleSize + 30,
@@ -85,7 +79,6 @@ class TimeUpScreen extends StatelessWidget {
                           ),
                         ),
 
-                        // inner circle
                         Container(
                           width: circleSize,
                           height: circleSize,
@@ -129,7 +122,6 @@ class TimeUpScreen extends StatelessWidget {
 
                   const SizedBox(height: 30),
 
-                  // Tambahkan nama pengguna untuk konsistensi dengan ScoreScreen
                   Text(
                     "Time’s Up, $userName!", 
                     style: const TextStyle(
@@ -147,10 +139,8 @@ class TimeUpScreen extends StatelessWidget {
                     ),
                   ),
 
-                  // Jarak yang lebih dinamis untuk tampilan yang rapi
                   SizedBox(height: size.height * 0.18), 
-                  
-                  // Tombol Back to Home (Sudah benar menggunakan Gradient)
+           
                   SizedBox(
                     width: double.infinity,
                     height: 52,
@@ -169,7 +159,6 @@ class TimeUpScreen extends StatelessWidget {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              // 🔥 PERBAIKAN KECIL: Menambahkan const
                               builder: (_) => const QuizHomeScreen(), 
                               settings: RouteSettings(arguments: userName),
                             ),

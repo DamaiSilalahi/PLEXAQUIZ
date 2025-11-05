@@ -1,76 +1,187 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import '../widgets/logo_widget.dart';
+import '../themes/app_theme.dart';
+import 'quiz_home_screen.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class ScoreScreen extends StatelessWidget {
+  final int score;
+  final int totalPoints;
+  final String quizName;
+  final String userName;
 
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Timer(const Duration(seconds: 20), () {
-      Navigator.pushReplacementNamed(context, '/home');
-    });
-  }
+  const ScoreScreen({
+    super.key,
+    required this.score,
+    required this.totalPoints,
+    required this.quizName,
+    required this.userName,
+  });
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final isTablet = size.width > 600;
+    final circleSize = size.width * 0.40;
 
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+        ),
+      ),
       body: Container(
-        width: double.infinity,
-        height: double.infinity,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF3B82F6), Color(0xFF06B6D4)],
+            colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            LogoWidget(size: isTablet ? 150 : 100),
-            const SizedBox(height: 20),
-            RichText(
-              text: TextSpan(
+        child: SafeArea(
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(24),
+                topRight: Radius.circular(24),
+              ),
+            ),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  TextSpan(
-                    text: 'Plexa',
+                  const SizedBox(height: 30),
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        width: circleSize + 30,
+                        height: circleSize + 30,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: LinearGradient(
+                            colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: circleSize,
+                        height: circleSize,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Color(0xFF0F4BA5),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 6,
+                              offset: Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Your Score",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              "$score/$totalPoints",
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  const Text(
+                    "🎉 Congratulations",
                     style: TextStyle(
-                      fontSize: isTablet ? 40 : 30,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: Color(0xFF0F4BA5),
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                  TextSpan(
-                    text: 'QUIZ',
-                    style: TextStyle(
-                      fontSize: isTablet ? 40 : 30,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF06B6D4),
+                  const SizedBox(height: 8),
+                  Text(
+                    "You completed the $quizName quiz!",
+                    style: const TextStyle(
+                      color: Color(0xFF0F4BA5),
+                      fontSize: 16,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 100),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 52,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        gradient: const LinearGradient(
+                          colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const QuizHomeScreen(),
+                              settings: RouteSettings(
+                                arguments: userName,
+                              ),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: EdgeInsets.zero,
+                        ),
+                        child: const Text(
+                          "Back to Home",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
                     ),
                   ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
-            const SizedBox(height: 10),
-            Text(
-              "Play, Explore and Learn",
-              style: TextStyle(
-                color: Colors.white.withOpacity(0.9),
-                fontSize: isTablet ? 20 : 14,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
