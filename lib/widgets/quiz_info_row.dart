@@ -1,5 +1,3 @@
-// File: lib/widgets/quiz_info_row.dart
-
 import 'package:flutter/material.dart';
 
 class QuizInfoRow extends StatelessWidget {
@@ -15,7 +13,7 @@ class QuizInfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0), 
+      padding: const EdgeInsets.only(bottom: 10.0),
       child: Row(
         children: [
           Icon(icon, size: 20, color: Colors.blueGrey),
