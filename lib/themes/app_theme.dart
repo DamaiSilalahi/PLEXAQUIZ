@@ -6,8 +6,26 @@ class AppTheme {
 
   static ThemeData lightTheme = ThemeData(
     fontFamily: 'Poppins',
+    colorScheme: ColorScheme.fromSwatch().copyWith(
+      primary: primaryColor,
+      secondary: secondaryColor,
+    ),
     primaryColor: primaryColor,
     scaffoldBackgroundColor: Colors.white,
+    appBarTheme: const AppBarTheme(
+      backgroundColor: primaryColor,
+      foregroundColor: Colors.white,
+      elevation: 0,
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: primaryColor,
+        foregroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
+      ),
+    ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: Colors.white,
