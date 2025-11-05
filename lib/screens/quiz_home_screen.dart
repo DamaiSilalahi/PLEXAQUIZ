@@ -25,6 +25,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
     return Scaffold(
       body: Stack(
         children: [
+          // Background gradient header
           Container(
             height: size.height * 0.35,
             decoration: const BoxDecoration(
@@ -35,6 +36,8 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
               ),
             ),
           ),
+
+          // Header (Teks Hello & Tombol Back) - Tetap di SafeArea
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -45,7 +48,6 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        // Supaya back konsisten ke route pertama:
                         onPressed: () => Navigator.popUntil(context, (route) => route.isFirst),
                       ),
                       const Text(
@@ -75,102 +77,111 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
                       fontSize: isTablet ? 24 : 20,
                     ),
                   ),
-                  SizedBox(height: isTablet ? 40 : 30),
-                  Expanded(
-                    child: Container(
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: isTablet ? 20 : 12,
-                        vertical: isTablet ? 30 : 24,
-                      ),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(28),
-                          topRight: Radius.circular(28),
-                        ),
-                      ),
-                      child: Column(
-                        children: [
-                          QuizCard(
-                            title: "UI UX Design",
-                            questions: "10 Question",
-                            time: "15 min",
-                            imagePath: "assets/images/uiux.png",
-                            isSelected: selectedQuiz == "UI UX Design",
-                            onTap: () => setState(() => selectedQuiz = "UI UX Design"),
-                          ),
-                          const SizedBox(height: 16),
-                          QuizCard(
-                            title: "Web Development",
-                            questions: "10 Question",
-                            time: "15 min",
-                            imagePath: "assets/images/webdev.png",
-                            isSelected: selectedQuiz == "Web Development",
-                            onTap: () => setState(() => selectedQuiz = "Web Development"),
-                          ),
-                          const Spacer(),
-                          GestureDetector(
-                            onTap: selectedQuiz == null
-                                ? null
-                                : () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => DetailQuizScreen(
-                                          quizType: selectedQuiz!, // ambil dari yang dipilih
-                                          userName: name, // kirim nama user dari args
-                                        ),
-                                      ),
-                                    );
-                                  },
-                            child: AnimatedContainer(
-                              duration: const Duration(milliseconds: 200),
-                              width: double.infinity,
-                              height: isTablet ? 65 : 55,
-                              decoration: BoxDecoration(
-                                gradient: selectedQuiz != null
-                                    ? const LinearGradient(
-                                        colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                      )
-                                    : LinearGradient(
-                                        colors: [
-                                          Colors.grey.shade400,
-                                          Colors.grey.shade500,
-                                        ],
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                      ),
-                                borderRadius: BorderRadius.circular(16),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: selectedQuiz != null
-                                        ? AppTheme.primaryColor.withOpacity(0.3)
-                                        : Colors.grey.withOpacity(0.3),
-                                    blurRadius: 6,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child: Center(
-                                child: Text(
-                                  "Start Quiz",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: isTablet ? 22 : 18,
-                                    fontWeight: FontWeight.bold,
+                ],
+              ),
+            ),
+          ),
+          
+          // Kontainer Putih Utama (Dibuat Melengkung)
+          // 🔥 PERBAIKAN: Menyesuaikan 'top' agar tidak menimpa teks
+          Positioned.fill(
+            top: size.height * 0.35 - (isTablet ? 30 : 30), // Mengurangi nilai `top` agar kontainer putih lebih rendah
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(28),
+                  topRight: Radius.circular(28),
+                ),
+              ),
+              child: Padding( // Menggunakan Padding di sini agar konten tidak menyentuh lengkungan
+                padding: EdgeInsets.only(
+                  left: isTablet ? 20 : 12,
+                  right: isTablet ? 20 : 12,
+                  top: isTablet ? 30 : 24, // Padding atas untuk jarak dari lengkungan
+                  bottom: isTablet ? 30 : 24,
+                ),
+                child: Column(
+                  children: [
+                    // Widget QuizCard di sini
+                    QuizCard(
+                      title: "UI UX Design",
+                      questions: "10 Question",
+                      time: "15 min",
+                      imagePath: "assets/images/uiux.png",
+                      isSelected: selectedQuiz == "UI UX Design",
+                      onTap: () => setState(() => selectedQuiz = "UI UX Design"),
+                    ),
+                    const SizedBox(height: 16),
+                    QuizCard(
+                      title: "Web Development",
+                      questions: "10 Question",
+                      time: "15 min",
+                      imagePath: "assets/images/webdev.png",
+                      isSelected: selectedQuiz == "Web Development",
+                      onTap: () => setState(() => selectedQuiz = "Web Development"),
+                    ),
+                    const Spacer(), // 🔥 PERBAIKAN: Mengembalikan Spacer agar tombol selalu di bawah
+                    
+                    // Tombol Start Quiz
+                    GestureDetector(
+                      onTap: selectedQuiz == null
+                          ? null
+                          : () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => DetailQuizScreen(
+                                    quizType: selectedQuiz!,
+                                    userName: name,
                                   ),
                                 ),
-                              ),
+                              );
+                            },
+                      child: AnimatedContainer(
+                        duration: const Duration(milliseconds: 200),
+                        width: double.infinity,
+                        height: isTablet ? 65 : 55,
+                        decoration: BoxDecoration(
+                          gradient: selectedQuiz != null
+                              ? const LinearGradient(
+                                  colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                )
+                              : LinearGradient(
+                                  colors: [
+                                    Colors.grey.shade400,
+                                    Colors.grey.shade500,
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: selectedQuiz != null
+                                  ? AppTheme.primaryColor.withOpacity(0.3)
+                                  : Colors.grey.withOpacity(0.3),
+                              blurRadius: 6,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Start Quiz",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: isTablet ? 22 : 18,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

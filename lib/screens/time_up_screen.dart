@@ -1,3 +1,5 @@
+// time_up_screen.dart - KODE LENGKAP YANG SUDAH DIPERBAIKI
+
 import 'package:flutter/material.dart';
 import '../themes/app_theme.dart';
 import 'quiz_home_screen.dart';
@@ -16,7 +18,12 @@ class TimeUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    final circleSize = size.width * 0.15;
+    // 🔥 PERBAIKAN: Mengatur ulang circleSize agar konsisten dengan ScoreScreen (0.40)
+    final circleSize = size.width * 0.40; 
+
+    // Mengambil userName dari argument Route (seperti yang Anda lakukan di onPressed)
+    // Jika tidak ada, default ke 'User'
+    final userName = ModalRoute.of(context)?.settings.arguments as String? ?? 'User';
 
     return Scaffold(
       extendBodyBehindAppBar: true, 
@@ -32,7 +39,6 @@ class TimeUpScreen extends StatelessWidget {
             ),
           ),
         ),
-        // tidak menampilkan automaticallyImplyLeading agar tidak mengubah navigasi lain
         automaticallyImplyLeading: false,
       ),
       body: Container(
@@ -45,7 +51,6 @@ class TimeUpScreen extends StatelessWidget {
         ),
         child: SafeArea(
           child: Container(
-            // Struktur putih dengan lengkungan atas sama persis seperti QuizScreen
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             decoration: const BoxDecoration(
@@ -57,7 +62,6 @@ class TimeUpScreen extends StatelessWidget {
             ),
             child: SingleChildScrollView(
               child: Column(
-                // posisikan konten mengikuti spacing di QuizScreen
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(height: 30),
@@ -125,9 +129,10 @@ class TimeUpScreen extends StatelessWidget {
 
                   const SizedBox(height: 30),
 
-                  const Text(
-                    "Time’s Up!",
-                    style: TextStyle(
+                  // Tambahkan nama pengguna untuk konsistensi dengan ScoreScreen
+                  Text(
+                    "Time’s Up, $userName!", 
+                    style: const TextStyle(
                       color: Color(0xFF0F4BA5),
                       fontSize: 24,
                       fontWeight: FontWeight.w700,
@@ -142,7 +147,10 @@ class TimeUpScreen extends StatelessWidget {
                     ),
                   ),
 
-                  SizedBox(height: size.height * 0.18),
+                  // Jarak yang lebih dinamis untuk tampilan yang rapi
+                  SizedBox(height: size.height * 0.18), 
+                  
+                  // Tombol Back to Home (Sudah benar menggunakan Gradient)
                   SizedBox(
                     width: double.infinity,
                     height: 52,
@@ -157,11 +165,12 @@ class TimeUpScreen extends StatelessWidget {
                       ),
                       child: ElevatedButton(
                         onPressed: () {
-                         final userName = ModalRoute.of(context)?.settings.arguments as String? ?? 'User';
+                          final userName = ModalRoute.of(context)?.settings.arguments as String? ?? 'User';
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => QuizHomeScreen(),
+                              // 🔥 PERBAIKAN KECIL: Menambahkan const
+                              builder: (_) => const QuizHomeScreen(), 
                               settings: RouteSettings(arguments: userName),
                             ),
                           );
@@ -172,6 +181,7 @@ class TimeUpScreen extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
+                          padding: EdgeInsets.zero, // Menghapus padding agar gradient terlihat sempurna
                         ),
                         child: const Text(
                           "Back to Home",

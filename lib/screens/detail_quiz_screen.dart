@@ -13,6 +13,33 @@ class DetailQuizScreen extends StatelessWidget {
     required this.userName,
   });
 
+  // Widget helper untuk membuat setiap baris aturan dengan bullet point
+  Widget _buildRuleRow(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0), // Jarak antar baris
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Bullet point (Lingkaran kecil)
+          const Padding(
+            padding: EdgeInsets.only(top: 4.0, right: 8.0), // Jarak ke teks
+            child: Icon(Icons.circle, size: 6, color: Colors.black87),
+          ),
+          // Teks aturan
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(
+                color: Colors.black87,
+                fontSize: 15,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isUIUX = quizType.toLowerCase().contains('ui');
@@ -103,7 +130,7 @@ class DetailQuizScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 14),
 
-                          // Info rows
+                          // Info rows (Jumlah soal, Waktu, Bintang)
                           Row(
                             children: const [
                               Icon(Icons.help_outline, size: 20, color: Colors.blueGrey),
@@ -136,14 +163,22 @@ class DetailQuizScreen extends StatelessWidget {
                               fontSize: 15,
                             ),
                           ),
+                          
                           const SizedBox(height: 10),
-                          const Text("• 10 points for a correct answer, 0 for wrong."),
-                          const Text("• Tap an option to select your answer."),
-                          const Text("• Click Start when you're ready."),
+
+                          // Area Bullet Points yang Dirapikan
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              _buildRuleRow("10 points for a correct answer, 0 for wrong."),
+                              _buildRuleRow("Tap an option to select your answer."),
+                              _buildRuleRow("Click Start when you're ready."),
+                            ],
+                          ),
 
                           const SizedBox(height: 40),
 
-                          // Tombol Start Quiz — WARNA DIGANTI
+                          // Tombol Start Quiz
                           SizedBox(
                             width: double.infinity,
                             height: 55,
@@ -169,15 +204,15 @@ class DetailQuizScreen extends StatelessWidget {
                                       ? QuizData.uiuxQuestions
                                       : QuizData.webQuestions;
                                   Navigator.pushReplacement(
-  context,
-  MaterialPageRoute(
-    builder: (_) => QuizScreen(
-      questions: questions,
-      quizType: quizType,
-      userName: userName, // kirim nama user
-    ),
-  ),
-);
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => QuizScreen(
+                                        questions: questions,
+                                        quizType: quizType,
+                                        userName: userName, // kirim nama user
+                                      ),
+                                    ),
+                                  );
                                 },
                                 child: const Text(
                                   "Start Quiz",

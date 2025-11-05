@@ -1,6 +1,8 @@
+// score_screen.dart - KODE LENGKAP DENGAN PERBAIKAN GRADASI TOMBOL
+
 import 'package:flutter/material.dart';
 import '../themes/app_theme.dart';
-import 'quiz_home_screen.dart';
+import 'quiz_home_screen.dart'; // Pastikan path ini benar
 
 class ScoreScreen extends StatelessWidget {
   final int score;
@@ -19,7 +21,7 @@ class ScoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final circleSize = size.width * 0.15;
+    final circleSize = size.width * 0.40;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -56,7 +58,8 @@ class ScoreScreen extends StatelessWidget {
                 topRight: Radius.circular(24),
               ),
             ),
-            child: SingleChildScrollView(
+            // PERBAIKAN: Memastikan konten dapat discroll
+            child: SingleChildScrollView( 
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -119,9 +122,9 @@ class ScoreScreen extends StatelessWidget {
 
                   const SizedBox(height: 30),
 
-                  Text(
+                  const Text(
                     "🎉 Congratulations",
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Color(0xFF0F4BA5),
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
@@ -138,41 +141,55 @@ class ScoreScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
 
-                  SizedBox(height: size.height * 0.18),
+                  const SizedBox(height: 100),
 
-                  // 👇 Back to home button
+                  // 🔥 BAGIAN PERBAIKAN: Tombol Back to Home dengan Gradasi
                   SizedBox(
                     width: double.infinity,
                     height: 52,
-                    child: ElevatedButton(
-                      onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => const QuizHomeScreen(),
-                          settings: RouteSettings(
-                            arguments: userName, 
-                          ),
-                        ),
-                      );
-                    },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.primaryColor,
-                        shadowColor: Colors.transparent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                    child: Container(
+                      decoration: BoxDecoration( // Tambahkan Container untuk menampung Gradient
+                        borderRadius: BorderRadius.circular(12),
+                        gradient: const LinearGradient(
+                          // Menggunakan warna gradient yang sama dengan AppBar/QuizScreen
+                          colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
                       ),
-                      child: const Text(
-                        "Back to Home",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const QuizHomeScreen(),
+                              settings: RouteSettings(
+                                arguments: userName, 
+                              ),
+                            ),
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          // Hapus warna latar belakang karena sudah dihandle Container/Gradient
+                          backgroundColor: Colors.transparent, 
+                          shadowColor: Colors.transparent, // Hilangkan shadow
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: EdgeInsets.zero, // Hapus padding default
+                        ),
+                        child: const Text(
+                          "Back to Home",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),
                   ),
+                  // 🔥 AKHIR BAGIAN PERBAIKAN
 
                   const SizedBox(height: 20),
                 ],

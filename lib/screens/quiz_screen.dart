@@ -1,3 +1,5 @@
+// quiz_screen.dart - KODE VERSI AMAN (ANTI LateInitializationError)
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../data/quiz_data.dart';
@@ -27,10 +29,12 @@ class _QuizScreenState extends State<QuizScreen>
   bool get wantKeepAlive => true;
 
   int currentIndex = 0;
-  int score = 0;
   late List<int?> userAnswers;
   late Timer timer;
-  int remainingSeconds = 900;
+  int remainingSeconds = 5;
+  
+  // 🔥 PERBAIKAN: INISIALISASI LANGSUNG UNTUK MENGHINDARI LATEINITIALIZATIONERROR
+  final ScrollController _scrollController = ScrollController(); 
 
   @override
   void initState() {
@@ -45,13 +49,50 @@ class _QuizScreenState extends State<QuizScreen>
         goToTimeUpScreen();
       }
     });
+
+    // Panggil scroll setelah build pertama selesai
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToCurrentIndex();
+    });
   }
 
   @override
   void dispose() {
     timer.cancel();
+    _scrollController.dispose(); // Tetap wajib dispose
     super.dispose();
   }
+
+  // Fungsi untuk MENGGESER indikator soal
+  void _scrollToCurrentIndex() {
+    // Ukuran satu item indikator soal: diameter (28) + margin horizontal (4 * 2) = 36
+    const double itemWidth = 36.0; 
+    
+    // Karena _scrollController sudah diinisialisasi di deklarasi, kita hanya perlu cek hasClients
+    if (_scrollController.hasClients) {
+      // Hitung posisi scroll yang menempatkan item aktif mendekati tengah layar
+      double targetScroll = currentIndex * itemWidth - 
+                            MediaQuery.of(context).size.width / 2 + 
+                            itemWidth / 2;
+
+      // Pastikan target tidak kurang dari 0
+      if (targetScroll < 0) {
+          targetScroll = 0;
+      }
+      // Batasi agar tidak scroll melebihi batas
+      if (_scrollController.position.maxScrollExtent > 0 && 
+          targetScroll > _scrollController.position.maxScrollExtent) {
+          targetScroll = _scrollController.position.maxScrollExtent;
+      }
+
+      _scrollController.animateTo(
+        targetScroll,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
+  }
+
 
   int calculateScore() {
     int total = 0;
@@ -64,6 +105,7 @@ class _QuizScreenState extends State<QuizScreen>
   }
 
   void goToTimeUpScreen() {
+    timer.cancel();
     final totalScore = calculateScore();
     final totalPoints = widget.questions.length * 10;
     Navigator.pushReplacement(
@@ -71,11 +113,13 @@ class _QuizScreenState extends State<QuizScreen>
       MaterialPageRoute(
         builder: (_) =>
             TimeUpScreen(score: totalScore, totalPoints: totalPoints),
+        settings: RouteSettings(arguments: widget.userName),
       ),
     );
   }
 
   void goToScoreScreen() {
+    timer.cancel();
     final totalScore = calculateScore();
     final totalPoints = widget.questions.length * 10;
     Navigator.pushReplacement(
@@ -85,7 +129,7 @@ class _QuizScreenState extends State<QuizScreen>
           score: totalScore,
           totalPoints: totalPoints,
           quizName: widget.quizType,
-          userName: 'User',
+          userName: widget.userName,
         ),
       ),
     );
@@ -94,7 +138,10 @@ class _QuizScreenState extends State<QuizScreen>
   void nextQuestion() {
     if (userAnswers[currentIndex] != null) {
       if (currentIndex < widget.questions.length - 1) {
-        setState(() => currentIndex++);
+        setState(() {
+          currentIndex++;
+          _scrollToCurrentIndex(); 
+        });
       } else {
         goToScoreScreen();
       }
@@ -109,7 +156,10 @@ class _QuizScreenState extends State<QuizScreen>
 
   void prevQuestion() {
     if (currentIndex > 0) {
-      setState(() => currentIndex--);
+      setState(() {
+        currentIndex--;
+        _scrollToCurrentIndex(); 
+      });
     }
   }
 
@@ -122,7 +172,13 @@ class _QuizScreenState extends State<QuizScreen>
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text("${widget.quizType} Quiz"),
+        title: Flexible(
+          child: Text(
+            widget.quizType,
+            style: const TextStyle(fontSize: 18),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         flexibleSpace: Container(
@@ -159,141 +215,164 @@ class _QuizScreenState extends State<QuizScreen>
           ),
         ),
         child: SafeArea(
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(24),
-                topRight: Radius.circular(24),
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(widget.questions.length, (index) {
-                    bool isActive = index == currentIndex;
-                    return Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      width: 28,
-                      height: 28,
-                      decoration: BoxDecoration(
-                        gradient: isActive
-                            ? const LinearGradient(
-                                colors: [
-                                  AppTheme.secondaryColor,
-                                  AppTheme.primaryColor
-                                ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                              )
-                            : null,
-                        color: isActive ? null : const Color(0xFFE0E0E0),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Center(
-                        child: Text(
-                          "${index + 1}",
-                          style: TextStyle(
-                            color: isActive ? Colors.white : Colors.black87,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-                ),
-
-                const SizedBox(height: 30),
-
-                // 🧾 pertanyaan
-                Text(
-                  question.question,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 20),
-
-                ...List.generate(question.options.length, (index) {
-                  final isSelected = selectedAnswer == index;
-                  return GestureDetector(
-                    onTap: () => setState(() {
-                      userAnswers[currentIndex] = index;
-                    }),
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 6),
-                      padding: const EdgeInsets.all(14),
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? AppTheme.secondaryColor.withOpacity(0.1)
-                            : Colors.white,
-                        border: Border.all(
-                          color: isSelected
-                              ? AppTheme.primaryColor
-                              : Colors.grey.shade300,
-                          width: 2,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 30,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              gradient: isSelected
-                                  ? const LinearGradient(
-                                      colors: [
-                                        AppTheme.secondaryColor,
-                                        AppTheme.primaryColor
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    )
-                                  : null,
-                              color:
-                                  isSelected ? null : Colors.grey.shade400,
-                            ),
-                            child: Center(
-                              child: Text(
-                                String.fromCharCode(65 + index),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              question.options[index],
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: isSelected
-                                    ? AppTheme.primaryColor
-                                    : Colors.black,
-                                fontWeight: isSelected
-                                    ? FontWeight.w600
-                                    : FontWeight.normal,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+          child: Column(
+            children: [
+              Expanded(
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(24),
+                      topRight: Radius.circular(24),
                     ),
-                  );
-                }),
+                  ),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // KODE PERBAIKAN: Menggunakan ListView.builder dengan ScrollController
+                        SizedBox(
+                          height: 35,
+                          child: ListView.builder(
+                            controller: _scrollController, // Terapkan controller
+                            scrollDirection: Axis.horizontal,
+                            itemCount: widget.questions.length,
+                            itemBuilder: (context, index) {
+                              bool isActive = index == currentIndex;
+                              return GestureDetector(
+                                onTap: () => setState(() {
+                                  currentIndex = index;
+                                  _scrollToCurrentIndex(); // Scroll saat ditekan
+                                }),
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                                  width: 28,
+                                  height: 28,
+                                  decoration: BoxDecoration(
+                                    gradient: isActive
+                                        ? const LinearGradient(
+                                            colors: [
+                                              AppTheme.secondaryColor,
+                                              AppTheme.primaryColor
+                                            ],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                          )
+                                        : null,
+                                    color: isActive ? null : const Color(0xFFE0E0E0),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "${index + 1}",
+                                      style: TextStyle(
+                                        color: isActive ? Colors.white : Colors.black87,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
 
-                const Spacer(),
+                        const SizedBox(height: 30),
 
-                Row(
+                        Text(
+                          question.question,
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 20),
+
+                        ...List.generate(question.options.length, (index) {
+                          final isSelected = selectedAnswer == index;
+                          return GestureDetector(
+                            onTap: () => setState(() {
+                              userAnswers[currentIndex] = index;
+                            }),
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(vertical: 6),
+                              padding: const EdgeInsets.all(14),
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? AppTheme.secondaryColor.withOpacity(0.1)
+                                    : Colors.white,
+                                border: Border.all(
+                                  color: isSelected
+                                      ? AppTheme.primaryColor
+                                      : Colors.grey.shade300,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      gradient: isSelected
+                                          ? const LinearGradient(
+                                              colors: [
+                                                AppTheme.secondaryColor,
+                                                AppTheme.primaryColor
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            )
+                                          : null,
+                                      color:
+                                          isSelected ? null : Colors.grey.shade400,
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        String.fromCharCode(65 + index),
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: Text(
+                                      question.options[index],
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: isSelected
+                                            ? AppTheme.primaryColor
+                                            : Colors.black,
+                                        fontWeight: isSelected
+                                            ? FontWeight.w600
+                                            : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }),
+
+                        const SizedBox(height: 100),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              Container(
+                color: Colors.white,
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // ⬅ previous
                     IconButton(
                       onPressed: prevQuestion,
                       icon: Container(
@@ -353,8 +432,8 @@ class _QuizScreenState extends State<QuizScreen>
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
