@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 import '../data/quiz_data.dart';
 import '../themes/app_theme.dart';
 import 'time_up_screen.dart';
+import 'score_screen.dart';
 
 class QuizScreen extends StatefulWidget {
   final List<QuizQuestion> questions;
   final String quizType;
+  final String userName;
 
   const QuizScreen({
     super.key,
     required this.questions,
     required this.quizType,
+    required this.userName,
   });
 
   @override
@@ -72,43 +75,28 @@ class _QuizScreenState extends State<QuizScreen>
     );
   }
 
+  void goToScoreScreen() {
+    final totalScore = calculateScore();
+    final totalPoints = widget.questions.length * 10;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ScoreScreen(
+          score: totalScore,
+          totalPoints: totalPoints,
+          quizName: widget.quizType,
+          userName: 'User',
+        ),
+      ),
+    );
+  }
+
   void nextQuestion() {
     if (userAnswers[currentIndex] != null) {
       if (currentIndex < widget.questions.length - 1) {
         setState(() => currentIndex++);
       } else {
-        final totalScore = calculateScore();
-        final totalPoints = widget.questions.length * 10;
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => Scaffold(
-              appBar: AppBar(
-                title: const Text("Score (sementara)"),
-                flexibleSpace: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                  ),
-                ),
-              ),
-              body: Center(
-                child: Text(
-                  "Score kamu: $totalScore / $totalPoints\n(${widget.quizType})",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: AppTheme.primaryColor,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
+        goToScoreScreen();
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -132,7 +120,7 @@ class _QuizScreenState extends State<QuizScreen>
     final selectedAnswer = userAnswers[currentIndex];
 
     return Scaffold(
-      extendBodyBehindAppBar: true, // supaya AppBar gradient menyatu
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text("${widget.quizType} Quiz"),
         backgroundColor: Colors.transparent,
@@ -162,8 +150,6 @@ class _QuizScreenState extends State<QuizScreen>
           ),
         ],
       ),
-
-      // ✅ FIXED: gradient full menyatu dengan AppBar, tanpa overlap putih
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -185,7 +171,6 @@ class _QuizScreenState extends State<QuizScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 🔢 indikator nomor soal
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: List.generate(widget.questions.length, (index) {
@@ -231,7 +216,6 @@ class _QuizScreenState extends State<QuizScreen>
                 ),
                 const SizedBox(height: 20),
 
-                // 🔘 opsi jawaban
                 ...List.generate(question.options.length, (index) {
                   final isSelected = selectedAnswer == index;
                   return GestureDetector(
@@ -306,7 +290,6 @@ class _QuizScreenState extends State<QuizScreen>
 
                 const Spacer(),
 
-                // 🔘 tombol navigasi
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -331,7 +314,6 @@ class _QuizScreenState extends State<QuizScreen>
                       ),
                     ),
 
-                    // ➡ next / submit
                     SizedBox(
                       width: 180,
                       height: 50,

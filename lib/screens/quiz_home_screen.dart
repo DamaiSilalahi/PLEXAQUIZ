@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import '../themes/app_theme.dart';
 import '../widgets/quiz_card.dart';
-import '../data/quiz_data.dart';
-import 'quiz_screen.dart';
-
+import 'detail_quiz_screen.dart';
 
 class QuizHomeScreen extends StatefulWidget {
   const QuizHomeScreen({super.key});
@@ -17,7 +15,10 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final name = ModalRoute.of(context)?.settings.arguments as String? ?? 'User';
+    // Ambil arguments dari route dengan aman
+    final args = ModalRoute.of(context)?.settings.arguments;
+    final name = args is String && args.isNotEmpty ? args : 'User';
+
     final size = MediaQuery.of(context).size;
     final isTablet = size.width > 600;
 
@@ -40,22 +41,23 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                Row(
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    const Text(
-                      "Home",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                        // Supaya back konsisten ke route pertama:
+                        onPressed: () => Navigator.popUntil(context, (route) => route.isFirst),
                       ),
-                    ),
-                  ],
-                ),
+                      const Text(
+                        "Home",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
                   SizedBox(height: isTablet ? 30 : 20),
                   Text(
                     "Hello, $name",
@@ -93,7 +95,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
                           QuizCard(
                             title: "UI UX Design",
                             questions: "10 Question",
-                            time: "1 hour 15 min",
+                            time: "15 min",
                             imagePath: "assets/images/uiux.png",
                             isSelected: selectedQuiz == "UI UX Design",
                             onTap: () => setState(() => selectedQuiz = "UI UX Design"),
@@ -102,73 +104,68 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
                           QuizCard(
                             title: "Web Development",
                             questions: "10 Question",
-                            time: "1 hour 15 min",
+                            time: "15 min",
                             imagePath: "assets/images/webdev.png",
                             isSelected: selectedQuiz == "Web Development",
                             onTap: () => setState(() => selectedQuiz = "Web Development"),
                           ),
                           const Spacer(),
                           GestureDetector(
-                          onTap: selectedQuiz == null
-                              ? null
-                              : () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) {
-                                        final questions = selectedQuiz == "UI UX Design"
-                                            ? QuizData.uiuxQuestions
-                                            : QuizData.webQuestions;
-                                        return QuizScreen(
-                                          questions: questions,
-                                          quizType: selectedQuiz!,
-                                        );
-                                      },
-                                    ),
-                                  );
-                                },
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 200),
-                            width: double.infinity,
-                            height: isTablet ? 65 : 55,
-                            decoration: BoxDecoration(
-                              gradient: selectedQuiz != null
-                                  ? const LinearGradient(
-                                      colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    )
-                                  : LinearGradient(
-                                      colors: [
-                                        Colors.grey.shade400,
-                                        Colors.grey.shade500,
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: selectedQuiz != null
-                                      ? AppTheme.primaryColor.withOpacity(0.3)
-                                      : Colors.grey.withOpacity(0.3),
-                                  blurRadius: 6,
-                                  offset: const Offset(0, 3),
-                                ),
-                              ],
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Start Quiz",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: isTablet ? 22 : 18,
-                                  fontWeight: FontWeight.bold,
+                            onTap: selectedQuiz == null
+                                ? null
+                                : () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => DetailQuizScreen(
+                                          quizType: selectedQuiz!, // ambil dari yang dipilih
+                                          userName: name, // kirim nama user dari args
+                                        ),
+                                      ),
+                                    );
+                                  },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              width: double.infinity,
+                              height: isTablet ? 65 : 55,
+                              decoration: BoxDecoration(
+                                gradient: selectedQuiz != null
+                                    ? const LinearGradient(
+                                        colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      )
+                                    : LinearGradient(
+                                        colors: [
+                                          Colors.grey.shade400,
+                                          Colors.grey.shade500,
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                borderRadius: BorderRadius.circular(16),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: selectedQuiz != null
+                                        ? AppTheme.primaryColor.withOpacity(0.3)
+                                        : Colors.grey.withOpacity(0.3),
+                                    blurRadius: 6,
+                                    offset: const Offset(0, 3),
+                                  ),
+                                ],
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Start Quiz",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: isTablet ? 22 : 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
                         ],
                       ),
                     ),
