@@ -55,7 +55,7 @@ class _QuizScreenState extends State<QuizScreen>
   @override
   void dispose() {
     timer.cancel();
-    _scrollController.dispose(); // Tetap wajib dispose
+    _scrollController.dispose(); 
     super.dispose();
   }
 
@@ -201,7 +201,6 @@ class _QuizScreenState extends State<QuizScreen>
         width: double.infinity,
         height: double.infinity, 
         decoration: const BoxDecoration(
-          // 🔥 PERBAIKAN GRADASI 2: Background Body
           gradient: LinearGradient(
             colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
             begin: Alignment.topLeft,

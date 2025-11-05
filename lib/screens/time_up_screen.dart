@@ -170,7 +170,7 @@ class TimeUpScreen extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          padding: EdgeInsets.zero, // Menghapus padding agar gradient terlihat sempurna
+                          padding: EdgeInsets.zero, 
                         ),
                         child: const Text(
                           "Back to Home",

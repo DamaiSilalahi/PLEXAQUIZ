@@ -15,7 +15,7 @@ class QuizInfoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0), // Jarak antar baris
+      padding: const EdgeInsets.only(bottom: 10.0), 
       child: Row(
         children: [
           Icon(icon, size: 20, color: Colors.blueGrey),

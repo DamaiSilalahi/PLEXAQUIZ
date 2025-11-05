@@ -145,7 +145,7 @@ class ScoreScreen extends StatelessWidget {
                     width: double.infinity,
                     height: 52,
                     child: Container(
-                      decoration: BoxDecoration( // Tambahkan Container untuk menampung Gradient
+                      decoration: BoxDecoration( 
                         borderRadius: BorderRadius.circular(12),
                         gradient: const LinearGradient(
                           
@@ -168,11 +168,11 @@ class ScoreScreen extends StatelessWidget {
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent, 
-                          shadowColor: Colors.transparent, // Hilangkan shadow
+                          shadowColor: Colors.transparent, 
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          padding: EdgeInsets.zero, // Hapus padding default
+                          padding: EdgeInsets.zero,
                         ),
                         child: const Text(
                           "Back to Home",
