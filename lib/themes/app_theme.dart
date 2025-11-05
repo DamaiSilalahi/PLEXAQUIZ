@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static const Color primaryColor = Color(0xFF06B6D4);
   static const Color secondaryColor = Color(0xFF3B82F6);
+  static const Color darkBlue = Color(0xFF0F4BA5);
 
   static ThemeData lightTheme = ThemeData(
     fontFamily: 'Poppins',

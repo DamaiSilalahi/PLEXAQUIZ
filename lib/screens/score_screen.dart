@@ -83,7 +83,7 @@ class ScoreScreen extends StatelessWidget {
                         height: circleSize,
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Color(0xFF0F4BA5),
+                          color: AppTheme.darkBlue,
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black12,
