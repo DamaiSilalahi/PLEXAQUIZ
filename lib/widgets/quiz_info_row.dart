@@ -20,7 +20,10 @@ class QuizInfoRow extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             text,
-            style: const TextStyle(fontSize: 14), 
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontSize: 14,
+              color: Colors.black87,
+            ),
           ),
         ],
       ),

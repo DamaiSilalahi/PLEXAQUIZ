@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../themes/app_theme.dart';
-import 'quiz_home_screen.dart'; 
+import 'quiz_home_screen.dart';
 
 class ScoreScreen extends StatelessWidget {
   final int score;
@@ -56,13 +56,11 @@ class ScoreScreen extends StatelessWidget {
                 topRight: Radius.circular(24),
               ),
             ),
- 
-            child: SingleChildScrollView( 
+            child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(height: 30),
-
                   Stack(
                     alignment: Alignment.center,
                     children: [
@@ -95,9 +93,9 @@ class ScoreScreen extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
+                            Text(
                               "Your Score",
-                              style: TextStyle(
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                 color: Colors.white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400,
@@ -106,7 +104,7 @@ class ScoreScreen extends StatelessWidget {
                             const SizedBox(height: 8),
                             Text(
                               "$score/$totalPoints",
-                              style: const TextStyle(
+                              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                 color: Colors.white,
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,
@@ -117,38 +115,32 @@ class ScoreScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 30),
-
-                  const Text(
+                  Text(
                     "🎉 Congratulations",
-                    style: TextStyle(
-                      color: Color(0xFF0F4BA5),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: const Color(0xFF0F4BA5),
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                   const SizedBox(height: 8),
-
                   Text(
                     "You completed the $quizName quiz!",
-                    style: const TextStyle(
-                      color: Color(0xFF0F4BA5),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: const Color(0xFF0F4BA5),
                       fontSize: 16,
                     ),
                     textAlign: TextAlign.center,
                   ),
-
                   const SizedBox(height: 100),
-
                   SizedBox(
                     width: double.infinity,
                     height: 52,
                     child: Container(
-                      decoration: BoxDecoration( 
+                      decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         gradient: const LinearGradient(
-                          
                           colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
@@ -160,23 +152,21 @@ class ScoreScreen extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (_) => const QuizHomeScreen(),
-                              settings: RouteSettings(
-                                arguments: userName, 
-                              ),
+                              settings: RouteSettings(arguments: userName),
                             ),
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent, 
-                          shadowColor: Colors.transparent, 
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
                           padding: EdgeInsets.zero,
                         ),
-                        child: const Text(
+                        child: Text(
                           "Back to Home",
-                          style: TextStyle(
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -185,7 +175,6 @@ class ScoreScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  
                   const SizedBox(height: 20),
                 ],
               ),

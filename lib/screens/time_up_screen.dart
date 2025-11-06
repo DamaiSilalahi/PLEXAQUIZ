@@ -15,13 +15,11 @@ class TimeUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
-    final circleSize = size.width * 0.40; 
-
+    final circleSize = size.width * 0.40;
     final userName = ModalRoute.of(context)?.settings.arguments as String? ?? 'User';
 
     return Scaffold(
-      extendBodyBehindAppBar: true, 
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -61,11 +59,11 @@ class TimeUpScreen extends StatelessWidget {
                 children: [
                   const SizedBox(height: 30),
 
+                  // --- Score Circle ---
                   Center(
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        
                         Container(
                           width: circleSize + 30,
                           height: circleSize + 30,
@@ -78,7 +76,6 @@ class TimeUpScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-
                         Container(
                           width: circleSize,
                           height: circleSize,
@@ -96,9 +93,9 @@ class TimeUpScreen extends StatelessWidget {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
+                              Text(
                                 "Your Score",
-                                style: TextStyle(
+                                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                   color: Colors.white,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
@@ -107,9 +104,8 @@ class TimeUpScreen extends StatelessWidget {
                               const SizedBox(height: 8),
                               Text(
                                 "$score/$totalPoints",
-                                style: const TextStyle(
+                                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                                   color: Colors.white,
-                                  fontSize: 30,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -122,25 +118,26 @@ class TimeUpScreen extends StatelessWidget {
 
                   const SizedBox(height: 30),
 
+                  // --- Title & Subtitle ---
                   Text(
-                    "Time’s Up, $userName!", 
-                    style: const TextStyle(
-                      color: Color(0xFF0F4BA5),
-                      fontSize: 24,
+                    "Time’s Up, $userName!",
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      color: const Color(0xFF0F4BA5),
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+                  Text(
                     "Your quiz has ended",
-                    style: TextStyle(
-                      color: Color(0xFF0F4BA5),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: const Color(0xFF0F4BA5),
                       fontSize: 15,
                     ),
                   ),
 
-                  SizedBox(height: size.height * 0.18), 
-           
+                  SizedBox(height: size.height * 0.18),
+
+                  // --- Button ---
                   SizedBox(
                     width: double.infinity,
                     height: 52,
@@ -159,7 +156,7 @@ class TimeUpScreen extends StatelessWidget {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const QuizHomeScreen(), 
+                              builder: (_) => const QuizHomeScreen(),
                               settings: RouteSettings(arguments: userName),
                             ),
                           );
@@ -170,14 +167,13 @@ class TimeUpScreen extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          padding: EdgeInsets.zero, 
+                          padding: EdgeInsets.zero,
                         ),
-                        child: const Text(
+                        child: Text(
                           "Back to Home",
-                          style: TextStyle(
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
                           ),
                         ),
                       ),

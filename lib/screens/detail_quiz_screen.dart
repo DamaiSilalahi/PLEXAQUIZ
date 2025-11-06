@@ -7,7 +7,7 @@ import 'quiz_screen.dart';
 class DetailQuizScreen extends StatelessWidget {
   final String quizType;
   final String userName;
-  
+
   const DetailQuizScreen({
     super.key,
     required this.quizType,
@@ -27,7 +27,7 @@ class DetailQuizScreen extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(
+              style: AppTheme.poppinsRegular.copyWith(
                 color: Colors.black87,
                 fontSize: 15,
               ),
@@ -55,13 +55,13 @@ class DetailQuizScreen extends StatelessWidget {
               ),
             ),
           ),
-
           SafeArea(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Row(
                     children: [
                       IconButton(
@@ -69,20 +69,17 @@ class DetailQuizScreen extends StatelessWidget {
                         onPressed: () => Navigator.pop(context),
                       ),
                       const SizedBox(width: 8),
-                      const Text(
+                      Text(
                         "Detail Quiz",
-                        style: TextStyle(
+                        style: AppTheme.poppinsBold.copyWith(
                           color: Colors.white,
                           fontSize: 20,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 20),
-
                 Expanded(
                   child: Container(
                     width: double.infinity,
@@ -100,80 +97,78 @@ class DetailQuizScreen extends StatelessWidget {
                         children: [
                           Text(
                             "$quizType Quiz",
-                            style: const TextStyle(
+                            style: AppTheme.poppinsBold.copyWith(
                               fontSize: 24,
-                              fontWeight: FontWeight.bold,
                               color: Colors.black87,
                             ),
                           ),
                           const SizedBox(height: 6),
-                          const Text(
+                          Text(
                             "GET 100 Points",
-                            style: TextStyle(
+                            style: AppTheme.poppinsRegular.copyWith(
                               color: Colors.grey,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                           const SizedBox(height: 24),
-                          const Text(
+                          Text(
                             "Brief explanation about this quiz",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
+                            style: AppTheme.poppinsBold.copyWith(
                               fontSize: 16,
+                              color: Colors.black87,
                             ),
                           ),
                           const SizedBox(height: 14),
-
                           Column(
                             children: const [
                               QuizInfoRow(
-                                icon: Icons.help_outline, 
+                                icon: Icons.help_outline,
                                 text: "10 Questions",
                               ),
                               QuizInfoRow(
-                                icon: Icons.access_time, 
+                                icon: Icons.access_time,
                                 text: "15 minutes total duration",
                               ),
                               QuizInfoRow(
-                                icon: Icons.star, 
+                                icon: Icons.star,
                                 text: "Win 10 stars if all correct",
                               ),
                             ],
                           ),
-
                           const SizedBox(height: 12),
-                          const Text(
+                          Text(
                             "Please read the text below carefully so you can understand it:",
-                            style: TextStyle(
+                            style: AppTheme.poppinsRegular.copyWith(
                               color: Colors.black87,
                               fontSize: 15,
                             ),
                           ),
-                          
                           const SizedBox(height: 10),
-
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildRuleRow("10 points for a correct answer, 0 for wrong."),
+                              _buildRuleRow(
+                                  "10 points for a correct answer, 0 for wrong."),
                               _buildRuleRow("Tap an option to select your answer."),
                               _buildRuleRow("Click Start when you're ready."),
                             ],
                           ),
-
                           const SizedBox(height: 40),
-
                           SizedBox(
                             width: double.infinity,
                             height: 55,
                             child: Container(
                               decoration: const BoxDecoration(
                                 gradient: LinearGradient(
-                                  colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
+                                  colors: [
+                                    AppTheme.secondaryColor,
+                                    AppTheme.primaryColor
+                                  ],
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                 ),
-                                borderRadius: BorderRadius.all(Radius.circular(16)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(16)),
                               ),
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
@@ -198,10 +193,9 @@ class DetailQuizScreen extends StatelessWidget {
                                     ),
                                   );
                                 },
-                                child: const Text(
+                                child: Text(
                                   "Start Quiz",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
+                                  style: AppTheme.poppinsBold.copyWith(
                                     fontSize: 18,
                                     color: Colors.white,
                                   ),

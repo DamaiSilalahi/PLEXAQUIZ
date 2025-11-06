@@ -25,11 +25,11 @@ class CustomButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           text,
-          style: TextStyle(
-            fontSize: isTablet ? 22 : 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+          fontSize: isTablet ? 22 : 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
         ),
       ),
     );

@@ -27,11 +27,11 @@ class CustomAppBar extends StatelessWidget {
           const SizedBox(width: 8),
           Text(
             title,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: isTablet ? 26 : 20,
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Colors.white,
+            fontSize: isTablet ? 26 : 20,
+            fontWeight: FontWeight.bold,
+          ),
           ),
         ],
       ),

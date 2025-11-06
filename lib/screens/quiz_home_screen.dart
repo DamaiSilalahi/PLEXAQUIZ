@@ -17,7 +17,6 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)?.settings.arguments;
     final name = args is String && args.isNotEmpty ? args : 'User';
-
     final size = MediaQuery.of(context).size;
     final isTablet = size.width > 600;
 
@@ -34,7 +33,6 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
               ),
             ),
           ),
-
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -47,12 +45,11 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
                         icon: const Icon(Icons.arrow_back, color: Colors.white),
                         onPressed: () => Navigator.popUntil(context, (route) => route.isFirst),
                       ),
-                      const Text(
+                      Text(
                         "Home",
-                        style: TextStyle(
+                        style: AppTheme.poppinsBold.copyWith(
                           color: Colors.white,
                           fontSize: 22,
-                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
@@ -60,7 +57,7 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
                   SizedBox(height: isTablet ? 30 : 20),
                   Text(
                     "Hello, $name",
-                    style: TextStyle(
+                    style: AppTheme.poppinsRegular.copyWith(
                       color: Colors.white,
                       fontSize: isTablet ? 22 : 18,
                     ),
@@ -68,9 +65,8 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
                   const SizedBox(height: 4),
                   Text(
                     "Let's test your knowledge",
-                    style: TextStyle(
+                    style: AppTheme.poppinsBold.copyWith(
                       color: Colors.white,
-                      fontWeight: FontWeight.bold,
                       fontSize: isTablet ? 24 : 20,
                     ),
                   ),
@@ -78,7 +74,6 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
               ),
             ),
           ),
-          
           Positioned.fill(
             top: size.height * 0.35 - (isTablet ? 30 : 30),
             child: Container(
@@ -116,7 +111,6 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
                       onTap: () => setState(() => selectedQuiz = "Web Development"),
                     ),
                     const Spacer(),
-                    
                     GestureDetector(
                       onTap: selectedQuiz == null
                           ? null
@@ -144,8 +138,8 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
                                 )
                               : LinearGradient(
                                   colors: [
-                                    Colors.grey.shade400,
-                                    Colors.grey.shade500,
+                                    Colors.grey,
+                                    Colors.grey,
                                   ],
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
@@ -164,10 +158,9 @@ class _QuizHomeScreenState extends State<QuizHomeScreen> {
                         child: Center(
                           child: Text(
                             "Start Quiz",
-                            style: TextStyle(
+                            style: AppTheme.poppinsBold.copyWith(
                               color: Colors.white,
                               fontSize: isTablet ? 22 : 18,
-                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),

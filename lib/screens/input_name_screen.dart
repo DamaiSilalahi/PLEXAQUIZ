@@ -54,17 +54,15 @@ class _InputNameScreenState extends State<InputNameScreen> {
                   children: [
                     TextSpan(
                       text: 'Plexa',
-                      style: TextStyle(
+                      style: AppTheme.poppinsBold.copyWith(
                         fontSize: isTablet ? 42 : 34,
-                        fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
                     TextSpan(
                       text: 'QUIZ',
-                      style: TextStyle(
+                      style: AppTheme.poppinsBold.copyWith(
                         fontSize: isTablet ? 42 : 34,
-                        fontWeight: FontWeight.bold,
                         color: const Color(0xFF00E6FF),
                       ),
                     ),
@@ -74,10 +72,9 @@ class _InputNameScreenState extends State<InputNameScreen> {
               const SizedBox(height: 10),
               Text(
                 "Play, Explore and Learn",
-                style: TextStyle(
+                style: AppTheme.poppinsRegular.copyWith(
                   color: Colors.white.withOpacity(0.9),
                   fontSize: isTablet ? 20 : 14,
-                  fontWeight: FontWeight.w400,
                 ),
               ),
               const SizedBox(height: 40),

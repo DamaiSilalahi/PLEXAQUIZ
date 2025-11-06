@@ -52,7 +52,7 @@ class QuizCard extends StatelessWidget {
                 imagePath,
                 width: isTablet ? 90 : 65,
                 height: isTablet ? 90 : 65,
-                fit: BoxFit.contain, // FIX: Mengatasi pemotongan gambar
+                fit: BoxFit.contain, 
                 errorBuilder: (_, __, ___) => Container(
                   width: isTablet ? 90 : 65,
                   height: isTablet ? 90 : 65,
@@ -69,12 +69,12 @@ class QuizCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: AppTheme.primaryColor,
                       fontSize: isTablet ? 20 : 16,
                       fontWeight: FontWeight.w600,
                     ),
-                    overflow: TextOverflow.ellipsis, // FIX: Mengatasi pemotongan teks
+                    overflow: TextOverflow.ellipsis, 
                     maxLines: 1, 
                   ),
                   const SizedBox(height: 6),

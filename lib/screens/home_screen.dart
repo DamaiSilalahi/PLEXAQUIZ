@@ -1,4 +1,5 @@
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import '../themes/app_theme.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -7,11 +8,23 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home Page'),
-        backgroundColor: const Color(0xFF06B6D4),
+        title: Text(
+          'Home Page',
+          style: AppTheme.poppinsBold.copyWith(
+            color: Colors.white,
+            fontSize: 20,
+          ),
+        ),
+        backgroundColor: AppTheme.primaryColor,
       ),
-      body: const Center(
-        child: Text('Welcome to PlexaQuiz!'),
+      body: Center(
+        child: Text(
+          'Welcome to PlexaQuiz!',
+          style: AppTheme.poppinsRegular.copyWith(
+            fontSize: 18,
+            color: Colors.black87,
+          ),
+        ),
       ),
     );
   }
