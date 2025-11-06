@@ -29,7 +29,7 @@ class _QuizScreenState extends State<QuizScreen>
   int currentIndex = 0;
   late List<int?> userAnswers;
   late Timer timer;
-  int remainingSeconds = 900;
+  int remainingSeconds = 5;
   final ScrollController _scrollController = ScrollController();
 
   @override

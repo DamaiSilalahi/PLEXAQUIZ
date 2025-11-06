@@ -19,7 +19,7 @@ class ScoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final circleSize = size.width * 0.40;
+    final circleSize = (size.width * 0.4).clamp(120.0, 220.0);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
