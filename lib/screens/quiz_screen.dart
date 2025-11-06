@@ -29,13 +29,15 @@ class _QuizScreenState extends State<QuizScreen>
   int currentIndex = 0;
   late List<int?> userAnswers;
   late Timer timer;
-  int remainingSeconds = 5;
+  int remainingSeconds = 900;
+
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     userAnswers = List.filled(widget.questions.length, null);
+
     timer = Timer.periodic(const Duration(seconds: 1), (t) {
       if (remainingSeconds > 0) {
         setState(() => remainingSeconds--);
@@ -44,6 +46,7 @@ class _QuizScreenState extends State<QuizScreen>
         goToTimeUpScreen();
       }
     });
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToCurrentIndex();
     });
@@ -52,21 +55,26 @@ class _QuizScreenState extends State<QuizScreen>
   @override
   void dispose() {
     timer.cancel();
-    _scrollController.dispose();
+    _scrollController.dispose(); 
     super.dispose();
   }
 
   void _scrollToCurrentIndex() {
     const double itemWidth = 36.0;
+
     if (_scrollController.hasClients) {
       double targetScroll = currentIndex * itemWidth -
           MediaQuery.of(context).size.width / 2 +
           itemWidth / 2;
-      if (targetScroll < 0) targetScroll = 0;
+
+      if (targetScroll < 0) {
+        targetScroll = 0;
+      }
       if (_scrollController.position.maxScrollExtent > 0 &&
           targetScroll > _scrollController.position.maxScrollExtent) {
         targetScroll = _scrollController.position.maxScrollExtent;
       }
+
       _scrollController.animateTo(
         targetScroll,
         duration: const Duration(milliseconds: 300),
@@ -128,7 +136,9 @@ class _QuizScreenState extends State<QuizScreen>
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select an answer before proceeding')),
+        const SnackBar(
+          content: Text('Please select an answer before proceeding'),
+        ),
       );
     }
   }
@@ -154,17 +164,16 @@ class _QuizScreenState extends State<QuizScreen>
         title: Flexible(
           child: Text(
             widget.quizType,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontSize: 18,
-              color: Colors.white,
-            ),
+            style: const TextStyle(fontSize: 18),
             overflow: TextOverflow.ellipsis,
           ),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        flexibleSpace: Container(
+       
+        flexibleSpace: Container( 
           decoration: const BoxDecoration(
+         
             gradient: LinearGradient(
               colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
               begin: Alignment.topLeft,
@@ -181,10 +190,7 @@ class _QuizScreenState extends State<QuizScreen>
                 const SizedBox(width: 4),
                 Text(
                   "${(remainingSeconds ~/ 60).toString().padLeft(2, '0')}:${(remainingSeconds % 60).toString().padLeft(2, '0')}",
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
+                  style: const TextStyle(color: Colors.white, fontSize: 14),
                 ),
               ],
             ),
@@ -193,7 +199,7 @@ class _QuizScreenState extends State<QuizScreen>
       ),
       body: Container(
         width: double.infinity,
-        height: double.infinity,
+        height: double.infinity, 
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [AppTheme.secondaryColor, AppTheme.primaryColor],
@@ -222,7 +228,7 @@ class _QuizScreenState extends State<QuizScreen>
                         SizedBox(
                           height: 35,
                           child: ListView.builder(
-                            controller: _scrollController,
+                            controller: _scrollController, // Terapkan controller
                             scrollDirection: Axis.horizontal,
                             itemCount: widget.questions.length,
                             itemBuilder: (context, index) {
@@ -230,7 +236,7 @@ class _QuizScreenState extends State<QuizScreen>
                               return GestureDetector(
                                 onTap: () => setState(() {
                                   currentIndex = index;
-                                  _scrollToCurrentIndex();
+                                  _scrollToCurrentIndex(); // Scroll saat ditekan
                                 }),
                                 child: Container(
                                   margin: const EdgeInsets.symmetric(horizontal: 4),
@@ -253,7 +259,7 @@ class _QuizScreenState extends State<QuizScreen>
                                   child: Center(
                                     child: Text(
                                       "${index + 1}",
-                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      style: TextStyle(
                                         color: isActive ? Colors.white : Colors.black87,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -264,15 +270,16 @@ class _QuizScreenState extends State<QuizScreen>
                             },
                           ),
                         ),
+
                         const SizedBox(height: 30),
+
                         Text(
                           question.question,
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 20),
+
                         ...List.generate(question.options.length, (index) {
                           final isSelected = selectedAnswer == index;
                           return GestureDetector(
@@ -316,7 +323,7 @@ class _QuizScreenState extends State<QuizScreen>
                                     child: Center(
                                       child: Text(
                                         String.fromCharCode(65 + index),
-                                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                        style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -327,7 +334,7 @@ class _QuizScreenState extends State<QuizScreen>
                                   Expanded(
                                     child: Text(
                                       question.options[index],
-                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      style: TextStyle(
                                         fontSize: 16,
                                         color: isSelected
                                             ? AppTheme.primaryColor
@@ -343,15 +350,17 @@ class _QuizScreenState extends State<QuizScreen>
                             ),
                           );
                         }),
+
                         const SizedBox(height: 100),
                       ],
                     ),
                   ),
                 ),
               ),
+
               Container(
                 color: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -370,9 +379,11 @@ class _QuizScreenState extends State<QuizScreen>
                             end: Alignment.bottomRight,
                           ),
                         ),
-                        child: const Icon(Icons.arrow_back, color: Colors.white),
+                        child:
+                            const Icon(Icons.arrow_back, color: Colors.white),
                       ),
                     ),
+
                     SizedBox(
                       width: 180,
                       height: 50,
@@ -401,7 +412,7 @@ class _QuizScreenState extends State<QuizScreen>
                             currentIndex == widget.questions.length - 1
                                 ? "Submit Quiz"
                                 : "Next",
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               fontSize: 16,

@@ -6,13 +6,18 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final isTablet = size.width > 600;
+    final titleSize = isTablet ? 26.0 : 20.0;
+    final bodySize = isTablet ? 20.0 : 16.0;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
           'Home Page',
           style: AppTheme.poppinsBold.copyWith(
             color: Colors.white,
-            fontSize: 20,
+            fontSize: titleSize, 
           ),
         ),
         backgroundColor: AppTheme.primaryColor,
@@ -21,7 +26,7 @@ class HomeScreen extends StatelessWidget {
         child: Text(
           'Welcome to PlexaQuiz!',
           style: AppTheme.poppinsRegular.copyWith(
-            fontSize: 18,
+            fontSize: bodySize, 
             color: Colors.black87,
           ),
         ),
